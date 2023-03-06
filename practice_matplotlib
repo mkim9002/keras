@@ -18,7 +18,7 @@ model.add(Dense(4))
 model.add(Dense(3))
 model.add(Dense(4))
 model.add(Dense(1))
-']
+
 #컴파일 , 훈련
 model.compile(loss='mse', optimizer='adam')
 model.fit(x_train,y_train, epochs = 77, batch_size=1)

@@ -35,7 +35,7 @@ optimizer = RMSprop(learning_rate=0.001)
 model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
 
 # 모델 훈련
-history = model.fit(x_train, y_train, epochs=100, batch_size=16, validation_split=0.2)
+history = model.fit(x_train, y_train, epochs=300, batch_size=16, validation_split=0.2)
 
 # 모델 평가
 loss, mae = model.evaluate(x_test, y_test)
@@ -46,3 +46,5 @@ print('mae:', mae)
 y_pred = model.predict(x_test)
 r2 = r2_score(y_test, y_pred)
 print('R2 score:', r2)
+
+

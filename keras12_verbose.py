@@ -24,8 +24,10 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 # Train the model for 500 epochs with a batch size of 32
-model.fit(x_train, y_train, epochs=500, batch_size=32, verbose=0)
+model.fit(x_train, y_train, epochs=10, batch_size=2, verbose='auto')
 
+
+'''
 # 평가, 예측 Evaluate the model on the test set
 loss = model.evaluate(x_test, y_test, verbose=0)
 print('loss :', loss)
@@ -36,6 +38,10 @@ r2 = r2_score(y_test, y_pred)
 print('r2 score :', r2)
 
 
+
 # 실습
 # 1. train 0.7
 # 2. R2 0.8 이상
+'''
+
+#
