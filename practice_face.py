@@ -1,37 +1,28 @@
-from flask import Flask, Response
-import cv2
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
 
-app = Flask(__name__)
+##########데이터 로드
 
-camera = cv2.VideoCapture(0)
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+df = pd.DataFrame([
+        [2, 1, 0],
+        [3, 2,0],
+        [3, 4, 0],
+        [5, 5, 1],
+        [7, 5, 1],
+        [2, 5, 0],
+        [8, 9, 1],
+        [9, 10, 1],
+        [6, 12, 1],
+        [9, 2, 1],
+        [6, 10, 1],
+        [2, 4, 0]
+    ], columns=['hour', 'attendance', 'pass'])
 
-def detect_face(frame):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    return frame
+print(df)
+df_x_data = df.drop(['pass'],axis=1)
+df_y_data = df['pass']
 
-def generate_frames():
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            frame = detect_face(frame)
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+df_x_train, df_x_test, df_y_train, df_y_test = train_test_split(df_x_data, df_y_data, test_size=0.3, random_state=777, stratify=df_y_data)
 
-@app.route('/')
-def index():
-    return '<html><body><img src="/video_feed" /></body></html>'
-
-if __name__ == '__main__':
-    app.run(debug=True)
+print(df_x_train)
