@@ -105,5 +105,3 @@ submission.to_csv(path + 'samplesubmission_0321_0447.csv')
 # model.add(Dense(70 ,activation='relu'))
 # model.add(Dense(500 ,activation='relu'))
 # model.add(Dense(10 ,activation='relu')) epochs=300 r2 = 4.41
-
-#

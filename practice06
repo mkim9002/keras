@@ -1,32 +1,33 @@
-import numpy as np  #숫자의 배열이나 행렬의 계산을 위해사용
-from tensorflow.keras.models import Sequential #tensorflow 이용 히여 모델을 불러오는 것을  Sequential 모델은 순차적으로 레이어 층을 더해주기 때문에 순차모델
-from tensorflow.keras.layers import Dense #tensorflow 이용 히여 케라스 이용 layer를 만들고 Dense클래스는 뉴런의 입력과 출력을 연결해주는 역할
+from sklearn.datasets import load_boston
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense
+from sklearn.model_selection import train_test_split
 
 #1. 데이터
-x = np.array([1,2,3,4,5,6,7,8,9,10]) #numpy에서는 기본적으로 array라는 단위로 데이터를 관리하며 이에 대해 연산
-y = np.array([1,2,3,4,5,6,7,8,9,10]) #array는 말그대로 행렬이라는 개념으로 생각
+datasets = load_boston()
+x = datasets.data
+y = datasets['target']
+print(x.shape, y.shape)
 
-#사이킷런 train,test 7:3
-from sklearn.model_selection import train_test_split
-x_train,x_test,y_train,y_test = train_test_split(x,y, 
-                                                 train_size=0.7, test_size=0.3, 
-                                                 random_state=1234,
-                                                 shuffle=True)
-print(x_train)
-print(y_test)
+x_train, x_test, y_train, y_test = train_test_split(
+    x,y, shuffle=True, random_state=123, test_size=0.2)
 
-#2. 모델구성
+
+#2. 모델 구성
 model = Sequential()
-model.add(Dense (1, input_dim =1)) #input_dim 이라는 변수는 입력 데이터에서 몇 개의 값을 가져올지를 정하는 것
+model.add(Dense(5, activation='relu',input_dim =13)) #print x shape의 (506. 13)input_dim은 x_shape두번째를를 본다
+model.add(Dense(4,activation='relu'))
+model.add(Dense(3,activation='relu'))
+model.add(Dense(2,activation='relu'))
+model.add(Dense(1,activation='linear'))
 
-#3. 컴파일,훈련
-model.compile(loss='mse', optimizer='adam') #평균 제곱 오차(mean squared error, MSE)이다. 예측과 실제의 차이를 오차 이며 오차를 모두 제곱한 다음에 평균 낸 것이 MSE
-#옵티마이저 (Optimizer)는 손실 함수을 통해 얻은 손실값으로부터 모델을 업데이트하는 방식
-model.fit(x_train,y_train, epochs = 30, batch_size=1) #model.fit()는 History 객체를 반환하며, 이 것이 바로 fit()을 실행하면 반환되는 출력 Log, 
-#전체 트레이닝 데이터 셋을 여러 작은 그룹을 나누었을 때 batch size는 하나의 소그룹에 속하는 데이터 수를 의미
+#3.컴파일 훈련
+model.compile(loss='mse', optimizer='adam')
 
-#4.평가,예측
-loss = model.evaluate (x_test,y_test) #모델이 주어진 문제와 해당 데이터에 가장 적합한지 여부를 확인하기 위해 모델을 개발하는 동안의 프로세스
-print('loss :', loss)
-result = model.predict ([11])
-print('[11]의 예측값 :)', result) #predict 메서드를 사용하여 테스트용 데이터의 예측값을 계산하고 predictions에 저장
+hist = model.fit(x_train,y_train, epochs=500, batch_size=8,
+                 validation_split=0.2,
+                 verbose=1)
+
+print(hist.history)
+
+import matplotlib.pyplot as plt
