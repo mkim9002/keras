@@ -79,7 +79,7 @@ model.add(Dense(1))
 
 #3. 컴파일, 훈련 
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=280, batch_size=100, verbose=3,
+model.fit(x_train, y_train, epochs=140, batch_size=16, verbose=3,
           validation_split=0.2)
 
 #4. 평가, 예측
@@ -107,7 +107,7 @@ submission['count'] = y_submit
 print(submission)
 
 path_save = './_save/ddarung/' 
-submission.to_csv(path_save + 'submit_0308_1705_val.csv') #파일생성 
+submission.to_csv(path_save + 'submit_0310_1254_val.csv') #파일생성 
 
 '''
 [1907_val]

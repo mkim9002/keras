@@ -37,7 +37,7 @@ es = EarlyStopping(monitor='val_loss', patience=20, mode = 'min',
 hist = model.fit(x_train,y_train, epochs=2000, batch_size=16,
           validation_split=0.2,
           verbose=1,
-          callbacks=(es),
+          callbacks=[es],
 )
      
 # print("===========================================================")

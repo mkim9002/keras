@@ -75,7 +75,7 @@ es = EarlyStopping(monitor='val_loss', patience=20, mode = 'min',
 
 
 
-hist = model.fit(x_train,y_train, epochs=200, batch_size=16,
+hist = model.fit(x_train,y_train, epochs=100, batch_size=16,
           validation_split=0.2,
           verbose=1,
           callbacks=(es),
@@ -107,15 +107,21 @@ def RMSE(y_test, y_predict):
 rmse = RMSE(y_test, y_predict)
 print("RMSE : ", rmse)
 
-import matplotlib.pyplot as plt
-plt.rcParams['font.family'] = 'Malgun Gothic'
-plt.figure(figsize=(9,6))
-plt.plot(hist.history['loss'], marker = '.', c='red', label='로스')
-plt.plot(hist.history['val_loss'], marker = '.', c='blue', label='발_로스')
-plt.title('보스톤')
-plt.xlabel('epochs')
-plt.ylabel('loss,val_loss')
-plt.legend()
-plt.grid()
-plt.show()
+y_submit = model.predict(test_csv)
+submission = pd.read_csv(path + 'samplesubmission.csv',index_col=0)
+print(submission) #카운트라는 컬럼에 데이터 데입
+submission['count'] = y_submit
+submission.to_csv(path + 'samplesubmission_0310_0407.csv') 
+
+# import matplotlib.pyplot as plt
+# plt.rcParams['font.family'] = 'Malgun Gothic'
+# plt.figure(figsize=(9,6))
+# plt.plot(hist.history['loss'], marker = '.', c='red', label='로스')
+# plt.plot(hist.history['val_loss'], marker = '.', c='blue', label='발_로스')
+# plt.title('보스톤')
+# plt.xlabel('epochs')
+# plt.ylabel('loss,val_loss')
+# plt.legend()
+# plt.grid()
+# plt.show()
 
