@@ -6,6 +6,9 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+
 
 # 1. 데이터
 path = './_data/kaggle_bike/'   #점 하나 현재폴더의밑에 점하나는 스터디
@@ -47,11 +50,15 @@ x = train_csv.drop(['count','casual','registered'], axis=1) #2개 이상 리스�
 print(x)
 y = train_csv['count']
 print(y)
-###############################train_csv 데이터에서 x와y를 분리
+
 scaler = MinMaxScaler()
 scaler.fit(x)
 x = scaler.transform(x)
 print(np.min(x), np.max(x))
+
+
+###############################train_csv 데이터에서 x와y를 분리
+
 
 
 
@@ -66,7 +73,7 @@ scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 print(np.min(x_test), np.max)
-
+test_csv = scaler.transform(test_csv)
 
 
 #2. 모델 구성

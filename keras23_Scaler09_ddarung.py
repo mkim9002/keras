@@ -4,6 +4,9 @@ from tensorflow.keras.layers import Dense
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error #mse
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+
 
 #1. 데이터 
 path = './_data/ddarung/'
@@ -64,11 +67,23 @@ print(x)
 y = train_csv['count']
 print(y)
 
+scaler = MinMaxScaler()
+scaler.fit(x)
+x = scaler.transform(x)
+
+
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, shuffle=True, train_size=0.8, random_state=34553
     )                               
 print(x_train.shape, x_test.shape) # (929, 9) (399, 9) * train_size=0.7, random_state=777일 때
 print(y_train.shape, y_test.shape) # (929,) (399,)     * train_size=0.7, random_state=777일 때
+
+scaler = RobustScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+test_csv = scaler.transform(test_csv)
+
 
 #2. 모델구성 
 model = Sequential()

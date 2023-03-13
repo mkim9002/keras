@@ -1,11 +1,14 @@
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense
+from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Dense, Input
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+
 
 # 1. 데이터
 path = './_data/kaggle_bike/'   #점 하나 현재폴더의밑에 점하나는 스터디
@@ -47,11 +50,15 @@ x = train_csv.drop(['count','casual','registered'], axis=1) #2개 이상 리스�
 print(x)
 y = train_csv['count']
 print(y)
-###############################train_csv 데이터에서 x와y를 분리
+
 scaler = MinMaxScaler()
 scaler.fit(x)
 x = scaler.transform(x)
 print(np.min(x), np.max(x))
+
+
+###############################train_csv 데이터에서 x와y를 분리
+
 
 
 
@@ -66,16 +73,24 @@ scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
 print(np.min(x_test), np.max)
-
+test_csv = scaler.transform(test_csv)
 
 
 #2. 모델 구성
-model = Sequential()
-model.add(Dense(10, activation='sigmoid',input_dim =8)) #print x shape의 (506. 13)input_dim은 x_shape두번째를를 본다
-model.add(Dense(10,activation='sigmoid'))
-model.add(Dense(10,activation='sigmoid'))
-model.add(Dense(5,activation='relu'))
-model.add(Dense(1,activation='linear'))
+# model = Sequential()
+# model.add(Dense(10, activation='sigmoid',input_dim =8)) #print x shape의 (506. 13)input_dim은 x_shape두번째를를 본다
+# model.add(Dense(10,activation='sigmoid'))
+# model.add(Dense(10,activation='sigmoid'))
+# model.add(Dense(5,activation='relu'))
+# model.add(Dense(1,activation='linear'))
+
+input1 = Input(shape=(8,))
+dense1 = Dense(10, activation = 'sigmoid')(input1)
+dense2 = Dense(10, activation = 'sigmoid')(dense1)
+dense3 = Dense(10, activation = 'sigmoid')(dense2)
+dense4 = Dense(5, activation = 'relu')(dense3)
+output1 = Dense(1, activation = 'linear')(dense4)
+model = Model(inputs=input1, outputs=output1)
 
 
 #3. 컴파일 훈련
@@ -90,7 +105,7 @@ es = EarlyStopping(monitor='val_loss', patience=40, mode = 'min',
 
 
 
-hist = model.fit(x_train,y_train, epochs=500, batch_size=16,
+hist = model.fit(x_train,y_train, epochs=100, batch_size=16,
           validation_split=0.2,
           verbose=1,
           callbacks=(es),
@@ -126,7 +141,7 @@ y_submit = model.predict(test_csv)
 submission = pd.read_csv(path + 'samplesubmission.csv',index_col=0)
 print(submission) #카운트라는 컬럼에 데이터 데입
 submission['count'] = y_submit
-submission.to_csv(path + 'samplesubmission_0311_0128.csv') 
+submission.to_csv(path + 'samplesubmission_0314_02.csv') 
 
 # import matplotlib.pyplot as plt
 # plt.rcParams['font.family'] = 'Malgun Gothic'

@@ -1,9 +1,12 @@
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Input
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error #mse
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MaxAbsScaler, RobustScaler
+
 
 #1. 데이터 
 path = './_data/ddarung/'
@@ -64,22 +67,43 @@ print(x)
 y = train_csv['count']
 print(y)
 
+scaler = MinMaxScaler()
+scaler.fit(x)
+x = scaler.transform(x)
+
+
 x_train, x_test, y_train, y_test = train_test_split(
     x, y, shuffle=True, train_size=0.8, random_state=34553
     )                               
 print(x_train.shape, x_test.shape) # (929, 9) (399, 9) * train_size=0.7, random_state=777일 때
 print(y_train.shape, y_test.shape) # (929,) (399,)     * train_size=0.7, random_state=777일 때
 
+scaler = RobustScaler()
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+test_csv = scaler.transform(test_csv)
+
+
 #2. 모델구성 
-model = Sequential()
-model.add(Dense(8, input_dim=9))
-model.add(Dense(4))
-model.add(Dense(2))
-model.add(Dense(1))
+# model = Sequential()
+# model.add(Dense(8, input_dim=9))
+# model.add(Dense(4))
+# model.add(Dense(2))
+# model.add(Dense(1))
+
+input1 = Input(shape=(9,))
+dense1 = Dense(8)(input1)
+dense2 = Dense(4)(dense1)
+dense3 = Dense(2)(dense2)
+output1 = Dense(1)(dense3)
+model = Model(inputs=input1, outputs=output1)
+
+
 
 #3. 컴파일, 훈련 
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=1000, batch_size=16, verbose=3,
+model.fit(x_train, y_train, epochs=170, batch_size=16, verbose=3,
           validation_split=0.2)
 
 #4. 평가, 예측
@@ -107,7 +131,7 @@ submission['count'] = y_submit
 print(submission)
 
 path_save = './_save/ddarung/' 
-submission.to_csv(path_save + 'submit_0311_0161_val.csv') #파일생성 
+submission.to_csv(path_save + 'submit_0314_10_val.csv') #파일생성 
 
 '''
 [1907_val]
