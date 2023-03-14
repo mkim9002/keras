@@ -19,11 +19,7 @@ print(x)
 #pip uninstall scikit-learn
 #pip install scikit-learn==1.1
 
-print(np.min(x), np.max(x))  #0.0 711.0
-scaler = MinMaxScaler()
-scaler.fit(x)
-x = scaler.transform(x)
-print(np.min(x), np.max(x)) #0.0 1.0
+
 
 x_train, x_test,y_train,y_test = train_test_split(
     x,y, train_size=0.8, random_state=333

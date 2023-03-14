@@ -109,12 +109,6 @@ model.compile(loss='mse', optimizer='adam')
 model.fit(x_train, y_train, epochs=20, batch_size=32, verbose=3,
           validation_split=0.2)
 
-import datetime
-date = datetime.datetime.now()
-print(date) #2023-03-14 11:14:35.924884
-date = date.strftime('%m%d_%H%M')
-print(date) #0314_1115
-
 
 
 #4. 평가, 예측
