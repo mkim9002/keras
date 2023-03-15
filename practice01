@@ -1,21 +1,6 @@
 from tensorflow.python.keras.models import Sequential, Model, load_model
-from tensorflow.python.keras.layers import Dense, Input, Dropout
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, mean_squared_error
-from sklearn.metrics import accuracy_score
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.preprocessing import MaxAbsScaler, RobustScaler
-from sklearn.preprocessing import OneHotEncoder
-from tensorflow.python.keras.callbacks import EarlyStopping
-
-#1. 데이터
-#1.1 경로, 가져오기
-path = './_data/wine_quality/'
-path_save = './_save/wine_quality/'
-
-
+from tensorflow.python.keras.layers import Dense, Input,Dropout
+from 
 
 
 

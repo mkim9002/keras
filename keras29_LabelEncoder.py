@@ -95,11 +95,11 @@ test_csv = scaler.transform(test_csv)
 input1 = Input(shape=(11,))
 dense1 = Dense(128, activation = 'relu')(input1)
 dense2 = Dense(64, activation = 'relu')(dense1)
-drop1 = Dropout(0.25)(dense2)
+drop1 = Dropout(0.15)(dense2)
 dense3 = Dense(32, activation = 'relu')(drop1)
 dense4 = Dense(16, activation = 'relu')(dense3)
 dense5 = Dense(8, activation = 'relu')(dense4)
-drop2 = Dropout(0.25)(dense5)
+drop2 = Dropout(0.15)(dense5)
 output1 = Dense(7, activation = 'softmax')(drop2)
 model = Model(inputs=input1, outputs=output1)
 
@@ -111,13 +111,13 @@ model.compile(loss='categorical_crossentropy', optimizer='adam',
               )
 
 
-es = EarlyStopping(monitor='val_loss', patience=10000,
+es = EarlyStopping(monitor='val_loss', patience=1000000000000000,
                    verbose=1,
                    restore_best_weights=True
                    )
               
-hist = model.fit(x_train,y_train, epochs=10000, batch_size=900,
-          validation_split=0.1,
+hist = model.fit(x_train,y_train, epochs=10000, batch_size=1000,
+          validation_split=0.01,
           verbose=1,
           callbacks=(es),
 )
@@ -146,8 +146,11 @@ print(y_submit.shape)
 y_submit += 3
 submission['quality'] = y_submit
 # print(submission)
+import datetime
+date= datetime.datetime.now()
+date = date.strftime("%m%d_%H%M")
 
 path_save = './_save/wine_quality/' 
-submission.to_csv(path_save + 'submit_014.csv')
+submission.to_csv(path_save + 'submit_016'+ date +'.csv')
 
-#accuracy score : 0.6296969696969696
+#accuracy score : 0.6442424242424243
