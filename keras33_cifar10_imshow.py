@@ -70,7 +70,7 @@ print('loss:', loss)
 print('accuracy: ', acc)
 
 print("걸리는 시간:", end_time-start_time)
-plt.imshow(x_train[2266], 'gray')
+plt.imshow(x_train[2266], 'red')
 plt.show()
 
 #acc ; 0.8911699779249448

@@ -1,4 +1,4 @@
-from tensorflow.keras.datasets import mnist , cifar10
+from tensorflow.keras.datasets import mnist , cifar100
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2D
 from sklearn.model_selection import train_test_split
@@ -10,10 +10,10 @@ from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
 # 1. 데이터
-(x_train, y_train), (x_test, y_test) = cifar10.load_data()
+(x_train, y_train), (x_test, y_test) = cifar100.load_data()
 
 print(x_train.shape, y_train.shape)   #(50000, 32, 32, 3) (50000, 1)
-print(x_test.shape, y_test.shape)     #(10000, 32, 32, 3) (10000, 1)
+print(x_test.shape, y_test.shape)  
 
 x_train = x_train/255.
 x_test = x_test/255.
@@ -50,7 +50,7 @@ model.add(Conv2D(filters=2, kernel_size=(7,7), activation='relu'))
 model.add(Flatten())
 model.add(Dense(66, activation='relu'))
 model.add(Dropout(0.9))
-model.add(Dense(10, activation='softmax'))
+model.add(Dense(100, activation='softmax'))
 
 model.summary()
 
@@ -70,7 +70,7 @@ print('loss:', loss)
 print('accuracy: ', acc)
 
 print("걸리는 시간:", end_time-start_time)
-plt.imshow(x_train[2266], 'gray')
+plt.imshow(x_train[250], cmap='viridis')
 plt.show()
 
 #acc ; 0.8911699779249448
