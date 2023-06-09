@@ -15,7 +15,7 @@ train_csv = pd.read_csv(path + 'train.csv',
                         index_col=0) #첫번쩨 는 아이디 인덱스 이다.
 print(train_csv)
 
-
+###
 
 test_csv = pd.read_csv(path + 'test.csv',
                         index_col=0)
