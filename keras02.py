@@ -2,7 +2,7 @@
 import numpy as np
 x = np.array([1,2,3])
 y = np.array([1,2,3])
-
+###
 #. 모델 구성
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
